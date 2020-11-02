@@ -8,7 +8,7 @@
 
 - Create your `server.js` file.
 - Run `npm init -y`
-- Run `npm install express mongoose dotenv if-env`
+- Run `npm install express mongoose dotenv if-env path`
 - Build out the basic server
 
 ```javascript
@@ -51,6 +51,44 @@ app.listen(PORT, () => {
 });
 ```
 
+### 2. Add create-react-app client on top.
 
-### 2. Add create-react-app client on top. 
-* In the root, run `npx create-react-app client --use-npm`
+- In the root, run `npx create-react-app client --use-npm`
+- Run `npm install concurrently -D`
+- Add script: `"client": "cd client && npm run start",` to server package.json
+- Add script `"start-dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",` to server package.json
+- Add `"proxy": "http://localhost:3001",` to the client package.json
+
+#### Testing and Validation
+
+- Install axios in the client directory
+- Make an API call to the `/api/config` route and log it to the console.
+
+### 3. Set the app up for Production
+
+- Update the scripts object in the server package.json:
+
+```javascript
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "node server.js",
+    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+    "client": "cd client && npm run start",
+    "install": "cd client && npm install",
+    "build": "cd client && npm run build",
+    "heroku-postbuild": "npm run build"
+  },
+```
+
+- Add build folder static and route to server.js
+
+```javascript
+app.use(express.static("client/build"));
+```
+
+```javascript
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+});
+```
