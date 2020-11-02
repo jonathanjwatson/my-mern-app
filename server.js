@@ -1,17 +1,3 @@
-# my-mern-app
-
-## GOAL: Build a fullstack MERN App
-
-## Steps
-
-### 1. Setup the server.js
-
-- Create your `server.js` file.
-- Run `npm init -y`
-- Run `npm install express mongoose dotenv if-env`
-- Build out the basic server
-
-```javascript
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
@@ -49,8 +35,3 @@ app.get("/api/config", (req, res) => {
 app.listen(PORT, () => {
   console.log(`App is running on http://localhost:${PORT}`);
 });
-```
-
-
-### 2. Add create-react-app client on top. 
-* In the root, run `npx create-react-app client --use-npm`
